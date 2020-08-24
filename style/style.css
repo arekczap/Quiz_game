@@ -1,0 +1,105 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 62.5%;
+  letter-spacing: .2rem;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #3582f0;
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 2rem;
+  width: 90rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 1.5rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: white;
+}
+
+.question {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.btn {
+  border: .2rem solid #1E3754;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 51, 0.9);
+  margin: .5rem 1rem;
+  padding: 1rem 5rem;
+  font-size: 3rem;
+  color: black;
+  overflow: hidden;
+  font-size: 2rem;
+}
+
+.btn-grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2rem 1rem;
+}
+
+.hide {
+  display: none;
+}
+
+.controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+}
+
+.controls__start-button {
+  margin: 1.5rem 10rem;
+  padding: 1rem 5rem;
+  font-size: 4rem;
+}
+
+.controls__start-button:focus, .btn:focus {
+  outline: none;
+}
+
+.controls__start-button:hover, .btn:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 0px 27px 96px -21px rgba(0, 0, 0, 0.43);
+  box-shadow: 0px 27px 96px -21px rgba(0, 0, 0, 0.43);
+}
+/*# sourceMappingURL=style.css.map */
