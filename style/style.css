@@ -77,7 +77,16 @@ body {
   display: none;
 }
 
+.correct {
+  background-color: #49FF17;
+}
+
+.wrong {
+  background-color: #E03220;
+}
+
 .controls {
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -101,5 +110,19 @@ body {
   cursor: pointer;
   -webkit-box-shadow: 0px 27px 96px -21px rgba(0, 0, 0, 0.43);
   box-shadow: 0px 27px 96px -21px rgba(0, 0, 0, 0.43);
+}
+
+.score {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.score__text {
+  font-size: 3rem;
+}
+
+.score__value {
+  font-size: 3rem;
 }
 /*# sourceMappingURL=style.css.map */

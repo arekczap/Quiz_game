@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
     <title>Quiz game</title>
 </head>
 
@@ -13,21 +14,27 @@
 
     <div class="container">
         <div class="question-container ">
-            <div class="question">Który bramkarz ma rekord w wygraniu największej liczby meczów w Anglii, wygrywając 125 meczów w swojej karierze?</div>
-            <div class="answer-buttons btn-grid">
-                <button class="btn">Liverpool </button>
-                <button class="btn">FC barcelona</button>
-                <button class="btn">Messi</button>
-                <button class="btn">Ronaldo</button>
+            <div class="question">Który bramkarz ma rekord w wygraniu największej liczby meczów w Anglii, wygrywając 125
+                meczów w swojej karierze?</div>
+            <div class="answer-buttons btn-grid ">
+                <button class="anwser btn ">Liverpool </button>
+                <button class="anwser btn">FC barcelona</button>
+                <button class="anwser btn">Messi</button>
+                <button class="anwser btn">Ronaldo</button>
             </div>
         </div>
         <div class="controls">
             <button class="controls__start-button btn hide">Start</button>
-            <button  class="controls__next-button btn ">Next</button>
+            <button class="controls__next-button btn ">Restart</button>
+
+            <div class="score">
+                <span class="score__text">Score: <span class="score__value">1</span></span>
+            </div>
         </div>
     </div>
 
 
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
-
 </html>

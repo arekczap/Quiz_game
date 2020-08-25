@@ -11,8 +11,8 @@
 
 $color-bgc: #3582F0;
 $color-bgc-card: white;
-$color-correct: #B7BD1C;
-$color-wrong: #BD3E00;
+$color-correct: #49FF17;
+$color-wrong: #E03220;
 $default-font-size: 1.6rem;
 
 
@@ -68,7 +68,17 @@ body {
 .hide {
     display: none;
 }
+
+.correct {
+    background-color: $color-correct;
+}
+.wrong {
+    background-color: $color-wrong;
+}
+
+
 .controls {
+    position: relative;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -80,6 +90,8 @@ body {
     font-size: 4rem;
 }
 
+
+
 .controls__start-button:focus, .btn:focus {
     outline: none;
 }
@@ -89,4 +101,19 @@ body {
     -webkit-box-shadow: 0px 27px 96px -21px rgba(0,0,0,0.43);
     -moz-box-shadow: 0px 27px 96px -21px rgba(0,0,0,0.43);
     box-shadow: 0px 27px 96px -21px rgba(0,0,0,0.43);
+}
+
+.score {
+position: absolute;
+right: 0;
+bottom: 0;
+
+
+    &__text {
+        font-size: 3rem;
+    }
+
+    &__value {
+        font-size: 3rem;
+    }
 }
