@@ -44,6 +44,10 @@ body {
     font-weight: 700;
 }
 
+.question-container {
+    width:  100%;
+}
+
 .btn {
 
     border: .2rem solid #1E3754;
@@ -56,6 +60,11 @@ body {
 
     overflow: hidden;
     font-size: 2rem;
+}
+
+.anwser {
+    color: inherit;
+    font-size: inherit;
 }
 
 .btn-grid {
