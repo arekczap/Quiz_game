@@ -54,7 +54,6 @@ body {
     border-radius: 1rem;
     background-color: rgba(#ffff33, .9);
     margin: .5rem 1rem;
-    padding: 1rem 5rem;
     font-size: 3rem;
     color: black;
 
@@ -63,8 +62,12 @@ body {
 }
 
 .anwser {
+    display: block;
     color: inherit;
     font-size: inherit;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 5rem;
 }
 
 .btn-grid {
@@ -99,7 +102,9 @@ body {
     font-size: 4rem;
 }
 
-
+.controls__next-button {
+    padding: 1rem 5rem;
+}
 
 .controls__start-button:focus, .btn:focus {
     outline: none;
