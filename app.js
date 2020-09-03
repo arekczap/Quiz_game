@@ -9,64 +9,128 @@ const selectors = {
     restartButtonSelector: document.querySelector('.controls__next-button'),
     scoreContainerSelector: document.querySelector('.score'),
     scoreValueSelector: document.querySelector('.score__value'),
+    scoreUpdateSelector: document.querySelector('.score__update')
 };
 
-function getQuestionFromDB() {
-    //generowanie losowej liczby do pytania
-    let randomQuestionNumber = Math.floor(Math.random() * 100) + 1;
+let totalScore;
+let correctQuestionFromDb = '';
 
+
+function getQuestionFromDB() {
+
+    let random = Math.floor(Math.random() * 100) + 1;
     // laczenie z baza danych
-    let reference = database.ref('questions/' + randomQuestionNumber);
-    reference.on('value', getQuestion);
+    let reference = database.ref('questions/' + random);
+    reference.on('value', getQuestion, getError);
+
 }
+
+
+function getError(error) {
+    console.log(error)
+
+}
+
+
 
 // pobieranie pytania i odpowiedzi z bazy i wpisanie ich do odpowiednich pól
 function getQuestion(data) {
     let questionFromDB = data.val();
     const { question, answer, correct } = questionFromDB;
 
+    correctQuestionFromDb = correct;
     selectors.questionSelector.innerText = question;
     selectors.answerSelector.forEach((selector, id) => {
         selector.innerText = answer[id];
     });
-
-    checkCorrectAnswer(correct);
 };
 
-//zerowanie wyniku
-function setZeroScore({ scoreValueSelector }) {
-    scoreValueSelector.innerText = '0';
+
+
+//zmiana wyniku
+function updateScoreNumber(numberToChangeScore) {
+    const { scoreValueSelector } = selectors;
+    totalScore += numberToChangeScore;
+    scoreValueSelector.textContent = totalScore;
 }
 
+
+
+
 //sprawdzenie poprawnej odpowiedzi
-function checkCorrectAnswer(correct) {
-
-    const { answerButtons, answerSelector } = selectors;
-
-    answerButtons.forEach(selector => {
-        selector.addEventListener('click', (e) => {
-
-            selector.innerText == correct ? selector.classList.add('correct') : selector.classList.add('wrong')
-        });
+selectors.answerButtons.forEach(selector => {
+    selector.addEventListener('click', checkCorrectAnswer)
+});
 
 
-        //TODO: zrobic podświetlanie elementów dobrych i złych
-    });
+function checkCorrectAnswer() {
 
+    console.log(correctQuestionFromDb);
+    const { answerButtons, answerSelector, scoreUpdateSelector } = selectors;
+
+//poprawić skrypt dobrego pytania po zmianach algorytmu
+    getQuestionFromDB();
+    // e.toElement.classList.add('checked');
+    // setTimeout(() => {
+
+    //     answerSelector.forEach(sel => {
+    //         if (sel.textContent == correct) {
+    //             sel.classList.add('correct');
+
+    //             scoreUpdateSelector.classList.add('update');
+    //         }
+    //         else {
+    //             sel.classList.add('wrong');
+    //             scoreUpdateSelector.classList.add('update');
+    //         }
+    //     });
+    //     e.toElement.classList.remove('checked');
+
+    // }, 3000);
+
+
+    // setTimeout(() => {
+    //     e.toElement.textContent == correctAnswerFromDB ? updateScoreNumber(10) : updateScoreNumber(-7);
+    //     scoreUpdateSelector.classList.remove('update');
+
+    // }, 4000);
+
+
+
+    // setTimeout(() => {
+    //     // clearAddedClassNames();
+    //     
+    // }, 5000);
+
+
+
+}
+
+function clearAddedClassNames() {
+    const { answerSelector } = selectors;
+
+    answerSelector.forEach(sel => {
+
+
+        sel.classList.remove('correct');
+        sel.classList.remove('wrong');
+    })
 }
 
 //funkcja inicjaloizująca,resetowanie pól tekstowych
-(function initialFunction({ questionSelector, answerSelector }) {
+function initialFunction() {
 
+    const { questionSelector, answerSelector } = selectors;
     questionSelector.innerText = '';
-    setZeroScore(selectors);
     answerSelector.forEach((answer => {
         answer.innerText = '';
     }));
-    getQuestionFromDB();
-})(selectors);
 
-//event nacisnięcia przycisku start, przejście do planszy z grą
+    totalScore = 0;
+    getQuestionFromDB();
+};
+
+// event nacisnięcia przycisku start, przejście do planszy z grą
 selectors.startButtonSelector.addEventListener('click', (e) => {
     const { questionContainerSelector, restartButtonSelector, scoreContainerSelector } = selectors;
 
@@ -74,16 +138,13 @@ selectors.startButtonSelector.addEventListener('click', (e) => {
     questionContainerSelector.classList.toggle('hide');
     restartButtonSelector.classList.toggle('hide');
     scoreContainerSelector.classList.toggle('hide');
+    initialFunction();
 });
 
 
 selectors.restartButtonSelector.addEventListener('click', () => {
     getQuestionFromDB();
-    setZeroScore(selectors);
+    totalScore = 0;
+    selectors.scoreValueSelector.textContent = totalScore;
+
 });
-
-
-
-
-
-

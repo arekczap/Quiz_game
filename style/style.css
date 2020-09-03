@@ -76,6 +76,11 @@ body {
   padding: 1rem 5rem;
 }
 
+.selected {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
 .btn-grid {
   display: -ms-grid;
   display: grid;
@@ -135,10 +140,91 @@ body {
 }
 
 .score__text {
+  margin-right: 2rem;
   font-size: 3rem;
 }
 
 .score__value {
+  position: relative;
+  margin: 0 1rem 0 2rem;
   font-size: 3rem;
+}
+
+.score__update {
+  opacity: 0;
+  font-size: 3rem;
+  position: absolute;
+  top: -4rem;
+  left: -2rem;
+}
+
+.checked {
+  -webkit-animation: moveButton 1s infinite;
+          animation: moveButton 1s infinite;
+}
+
+.update {
+  -webkit-animation: updatePoints 1s linear;
+          animation: updatePoints 1s linear;
+}
+
+@-webkit-keyframes moveButton {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.02);
+            transform: scale(1.02);
+    background-color: gray;
+    color: white;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes moveButton {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.02);
+            transform: scale(1.02);
+    background-color: gray;
+    color: white;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@-webkit-keyframes updatePoints {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    top: 0rem;
+  }
+  100% {
+    opacity: 0;
+    outline: none;
+  }
+}
+
+@keyframes updatePoints {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    top: 0rem;
+  }
+  100% {
+    opacity: 0;
+    outline: none;
+  }
 }
 /*# sourceMappingURL=style.css.map */

@@ -70,12 +70,21 @@ body {
     padding: 1rem 5rem;
 }
 
+.selected {
+    background-color: rgba(black, .8);
+    color: white;
+
+
+}
+
 .btn-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin: 2rem 1rem;
 }
+
+
 
 .hide {
     display: none;
@@ -124,10 +133,64 @@ bottom: 0;
 
 
     &__text {
+        margin-right: 2rem;
         font-size: 3rem;
     }
 
     &__value {
+        position: relative;
+        margin: 0 1rem 0 2rem;
         font-size: 3rem;
     }
+
+    &__update {
+        opacity: 0;
+        font-size: 3rem;
+        position: absolute;
+        top: -4rem;
+        left: -2rem;
+        
+    }
 }
+
+.checked {
+    animation: moveButton 1s infinite;
+}
+
+.update {
+    animation: updatePoints 1s linear;
+}
+
+
+
+
+@keyframes moveButton {
+    0% {
+        transform: scale(1);;
+    }
+    
+    50% {
+        transform: scale(1.02);
+        background-color: gray;
+        // border: .2rem solid gray;
+        color: white;
+    }
+    100% {
+        transform: scale(1);;
+    }
+  }
+
+  @keyframes updatePoints {
+      0% {
+          opacity: 1;
+      }
+      90% {
+        top: 0rem;
+      }
+
+      100% {
+          opacity: 0;
+          outline: none;
+        }
+      
+  }
