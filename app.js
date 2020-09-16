@@ -17,17 +17,18 @@ let correctAswerFromDb = '';
 
 
 function getQuestionFromDB() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         let random = Math.floor(Math.random() * 100) + 1;
         // laczenie z baza danych
-        let reference = database.ref('questions/' + random);
-        reference.on('value', (data) => {
-            questionFromDb = data.val();
+        let someData = database.ref('questions/' + random).once('value').then((snapshot) => {
+            return snapshot.val();
         });
-        resolve();
-    })
+        resolve(someData);
 
-
+    }).then((response) => {
+        questionFromDb = response;
+        correctAswerFromDb = questionFromDb.correct;
+    });
 }
 
 function attachQuestionToSelectors() {
@@ -39,25 +40,17 @@ function attachQuestionToSelectors() {
             selector.innerText = answer[id];
         })
         resolve()
-        // selectors.questionSelector.innerText = question;
-        // selectors.answerSelector.forEach((selector, id) => {
-        //     selector.innerText = answer[id];
-        // });
     })
 }
 
-//zmiana wyniku
-function updateScoreNumber(numberToChangeScore) {
-    const { scoreValueSelector } = selectors;
-    totalScore += numberToChangeScore;
-    scoreValueSelector.textContent = totalScore;
-}
-
 function timeoutCheckAnswer() {
+
+    event.toElement.classList.add('checked');
+
     return new Promise((resolve) => {
         const { answerButtons, answerSelector, scoreUpdateSelector } = selectors;
 
-        event.toElement.classList.add('checked');
+        console.log((correctAswerFromDb));
 
         setTimeout(() => {
             answerSelector.forEach(sel => {
@@ -70,12 +63,13 @@ function timeoutCheckAnswer() {
                     sel.classList.add('wrong');
                     scoreUpdateSelector.classList.add('update');
                 }
-                sel.classList.remove('checked')
+                sel.classList.remove('checked');
             });
             resolve()
         }, 3000);
     })
 }
+
 
 function clearAddedClassNames() {
     return new Promise((resolve) => {
@@ -92,40 +86,6 @@ function clearAddedClassNames() {
     })
 }
 
-function nextQuestion(params) {
-    return new Promise((resolve) => {
-
-        getQuestionFromDB();
-        resolve();
-    })
-
-
-}
-
-
-
-
-//sprawdzenie poprawnej odpowiedzi
-selectors.answerButtons.forEach(selector => {
-    selector.addEventListener('click', checkCorrectAnswer)
-});
-
-
-async function checkCorrectAnswer() {
-
-    await timeoutCheckAnswer();
-    await clearAddedClassNames();
-    await nextQuestion();
-    // setTimeout(() => {
-    //     e.toElement.textContent == correctAnswerFromDB ? updateScoreNumber(10) : updateScoreNumber(-7);
-    //     scoreUpdateSelector.classList.remove('update');
-
-    // }, 4000);
-}
-
-
-
-
 function initialFunction() {
     return new Promise((resolve) => {
         const { questionSelector, answerSelector } = selectors;
@@ -134,10 +94,52 @@ function initialFunction() {
             answer.innerText = '';
         }));
         totalScore = 0;
-        resolve
+        resolve();
     })
 
 };
+
+//zmiana wyniku
+function updateScoreNumber(numberToChangeScore) {
+    const { scoreValueSelector } = selectors;
+    totalScore += numberToChangeScore;
+    scoreValueSelector.textContent = totalScore;
+}
+
+
+
+
+
+function nextQuestion() {
+    return new Promise((resolve) => {
+        getQuestionFromDB();
+        resolve();
+    })
+}
+
+async function getQuestion() {
+    await getQuestionFromDB();
+    await initialFunction();
+    await attachQuestionToSelectors();
+}
+
+async function checkCorrectAnswer() {
+    await timeoutCheckAnswer();
+    await clearAddedClassNames().then(() => getQuestion());
+
+}
+//sprawdzenie poprawnej odpowiedzi
+selectors.answerButtons.forEach(selector => {
+    selector.addEventListener('click', checkCorrectAnswer)
+});
+
+
+
+    // setTimeout(() => {
+    //     e.toElement.textContent == correctAnswerFromDB ? updateScoreNumber(10) : updateScoreNumber(-7);
+    //     scoreUpdateSelector.classList.remove('update');
+
+    // }, 4000);
 
 
 
@@ -146,16 +148,7 @@ function initialFunction() {
 selectors.startButtonSelector.addEventListener('click', (e) => {
 
     e.toElement.disabled = true;
-    async function fc() {
-        await getQuestionFromDB();
-        await initialFunction();
-        await attachQuestionToSelectors();
-    }
-    
-
-    
-
-    // console.log(res);
+    getQuestion();
 
     setTimeout(() => {
         const { questionContainerSelector, scoreContainerSelector } = selectors;
@@ -164,11 +157,7 @@ selectors.startButtonSelector.addEventListener('click', (e) => {
         questionContainerSelector.classList.toggle('hide');
         scoreContainerSelector.classList.toggle('hide');
 
-
     }, 500);
-
-
-
 });
 
 
