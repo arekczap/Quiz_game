@@ -14,6 +14,7 @@ const selectors = {
 let totalScore;
 let questionFromDb;
 let correctAswerFromDb = '';
+let checkedAnswer = '';
 
 
 function getQuestionFromDB() {
@@ -43,28 +44,21 @@ function attachQuestionToSelectors() {
     })
 }
 
-function timeoutCheckAnswer() {
+function checkAnswer() {
 
     event.toElement.classList.add('checked');
+     checkedAnswer = event.toElement.textContent;
 
     return new Promise((resolve) => {
-        const { answerButtons, answerSelector, scoreUpdateSelector } = selectors;
-
-        console.log((correctAswerFromDb));
+        const { answerSelector } = selectors;
 
         setTimeout(() => {
             answerSelector.forEach(sel => {
-                if (sel.textContent == correctAswerFromDb) {
-                    sel.classList.add('correct');
+                sel.textContent == correctAswerFromDb ? sel.classList.add('correct') : sel.classList.add('wrong');
 
-                    scoreUpdateSelector.classList.add('update');
-                }
-                else {
-                    sel.classList.add('wrong');
-                    scoreUpdateSelector.classList.add('update');
-                }
                 sel.classList.remove('checked');
             });
+            updateScoreNumber();
             resolve()
         }, 3000);
     })
@@ -73,7 +67,7 @@ function timeoutCheckAnswer() {
 
 function clearAddedClassNames() {
     return new Promise((resolve) => {
-        const { answerSelector } = selectors;
+        const { answerSelector, scoreUpdateSelector } = selectors;
 
 
         setTimeout(() => {
@@ -81,6 +75,8 @@ function clearAddedClassNames() {
                 sel.classList.remove('correct');
                 sel.classList.remove('wrong');
             })
+            scoreUpdateSelector.classList.remove('update');
+
             resolve();
         }, 3000);
     })
@@ -88,34 +84,51 @@ function clearAddedClassNames() {
 
 function initialFunction() {
     return new Promise((resolve) => {
-        const { questionSelector, answerSelector } = selectors;
+        const { questionSelector, answerSelector, scoreUpdateSelector } = selectors;
         questionSelector.innerText = '';
         answerSelector.forEach((answer => {
             answer.innerText = '';
         }));
+        scoreUpdateSelector.textContent = '0';
         totalScore = 0;
         resolve();
     })
 
 };
 
-//zmiana wyniku
-function updateScoreNumber(numberToChangeScore) {
-    const { scoreValueSelector } = selectors;
-    totalScore += numberToChangeScore;
-    scoreValueSelector.textContent = totalScore;
+
+
+function updateScoreNumber() {
+    const { scoreUpdateSelector } = selectors;
+
+if (checkedAnswer == correctAswerFromDb) {
+    
+    // TODO: zrobic logikę dodawania i odejmowania punktow do score, potem zablokować możliwość naciśnięcia odpowiedzi drugi raz podczas sprawdzania czy zaznaczona została dobra odpowiedz
+console.log("poprawne");
+} else {
+    console.log("niepoprawne");
+}
+    
+
+    // scoreUpdateSelector.classList.add('updatePlus');
+    // scoreUpdateSelector.textContent = '-7';
+
+
+
+    // totalScore += numberToChangeScore;
+    // scoreValueSelector.textContent = totalScore;
 }
 
 
 
 
 
-function nextQuestion() {
-    return new Promise((resolve) => {
-        getQuestionFromDB();
-        resolve();
-    })
-}
+// function nextQuestion() {
+//     return new Promise((resolve) => {
+//         getQuestionFromDB();
+//         resolve();
+//     })
+// }
 
 async function getQuestion() {
     await getQuestionFromDB();
@@ -124,10 +137,15 @@ async function getQuestion() {
 }
 
 async function checkCorrectAnswer() {
-    await timeoutCheckAnswer();
+    await checkAnswer();
     await clearAddedClassNames().then(() => getQuestion());
 
 }
+
+
+
+
+
 //sprawdzenie poprawnej odpowiedzi
 selectors.answerButtons.forEach(selector => {
     selector.addEventListener('click', checkCorrectAnswer)
@@ -135,11 +153,11 @@ selectors.answerButtons.forEach(selector => {
 
 
 
-    // setTimeout(() => {
-    //     e.toElement.textContent == correctAnswerFromDB ? updateScoreNumber(10) : updateScoreNumber(-7);
-    //     scoreUpdateSelector.classList.remove('update');
+// setTimeout(() => {
+//     e.toElement.textContent == correctAnswerFromDB ? updateScoreNumber(10) : updateScoreNumber(-7);
+//     scoreUpdateSelector.classList.remove('update');
 
-    // }, 4000);
+// }, 4000);
 
 
 
