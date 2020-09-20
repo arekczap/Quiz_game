@@ -46,14 +46,14 @@ function attachQuestionToSelectors() {
 
 function checkAnswer() {
 
-    event.toElement.classList.add('checked');
+    event.toElement.parentNode.classList.add('checked');
     checkedAnswer = event.toElement.textContent;
 
     return new Promise((resolve) => {
-        const { answerSelector } = selectors;
+        const { answerSelector, answerButtons } = selectors;
 
         setTimeout(() => {
-            answerSelector.forEach(sel => {
+            answerButtons.forEach(sel => {
                 sel.textContent == correctAswerFromDb ? sel.classList.add('correct') : sel.classList.add('wrong');
 
                 sel.classList.remove('checked');
@@ -67,11 +67,11 @@ function checkAnswer() {
 
 function clearAddedClassNames() {
     return new Promise((resolve) => {
-        const { answerSelector, scoreUpdateSelector } = selectors;
+        const { answerSelector, scoreUpdateSelector, answerButtons } = selectors;
 
 
         setTimeout(() => {
-            answerSelector.forEach(sel => {
+            answerButtons.forEach(sel => {
                 sel.classList.remove('correct');
                 sel.classList.remove('wrong');
                 scoreUpdateSelector.classList.remove('updatePlus');
@@ -107,7 +107,7 @@ function updateScoreNumberHtml(score) {
 
 
 
-//TODO: naprawić klikanie na element jeżeli, zostanie wciśniety to nie mozna drugi raz
+
 function blockClickAnwsersButtons(state) {
     const { answerSelector } = selectors;
     answerSelector.forEach(sel => {
