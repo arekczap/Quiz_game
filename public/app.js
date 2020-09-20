@@ -19,7 +19,7 @@ let checkedAnswer = '';
 
 function getQuestionFromDB() {
     return new Promise((resolve, reject) => {
-        let random = Math.floor(Math.random() * 100) + 1;
+        let random = Math.floor(Math.random() * 99) + 1;
         // laczenie z baza danych
         let someData = database.ref('questions/' + random).once('value').then((snapshot) => {
             return snapshot.val();
@@ -55,7 +55,6 @@ function checkAnswer() {
         setTimeout(() => {
             answerSelector.forEach(sel => {
                 sel.textContent == correctAswerFromDb ? sel.classList.add('correct') : sel.classList.add('wrong');
-                console.log("tap");
 
                 sel.classList.remove('checked');
             });
@@ -77,9 +76,9 @@ function clearAddedClassNames() {
                 sel.classList.remove('wrong');
                 scoreUpdateSelector.classList.remove('updatePlus');
                 scoreUpdateSelector.classList.remove('updateMinus');
-                sel.disabled = false;
             })
             scoreUpdateSelector.classList.remove('update');
+            blockClickAnwsersButtons(false);
             resolve();
         }, 3000);
     })
@@ -100,7 +99,7 @@ function initialFunction() {
 };
 
 
-function updateScoreNumber(score) {
+function updateScoreNumberHtml(score) {
     const { scoreValueSelector } = selectors;
     totalScore += score;
     scoreValueSelector.textContent = totalScore;
@@ -109,23 +108,16 @@ function updateScoreNumber(score) {
 
 
 //TODO: naprawić klikanie na element jeżeli, zostanie wciśniety to nie mozna drugi raz
-function blockClickAnwsers(state) {
-
+function blockClickAnwsersButtons(state) {
     const { answerSelector } = selectors;
-
-
     answerSelector.forEach(sel => {
         if (state) {
-            sel.disabled = true;
-            console.log('zablokowano');
+            sel.parentNode.disabled = true;
         } else {
-            sel.disable = false;
-            console.log('odblokowano');
+            sel.parentNode.disabled = false;
         }
     });
 }
-
-
 
 function updateScore() {
 
@@ -133,9 +125,9 @@ function updateScore() {
     let minusScore = -7;
 
     if (checkedAnswer == correctAswerFromDb) {
-        updateScoreNumber(plusScore);
+        updateScoreNumberHtml(plusScore);
     } else {
-        updateScoreNumber(minusScore);
+        updateScoreNumberHtml(minusScore);
     }
 }
 
@@ -149,8 +141,11 @@ async function getQuestion() {
 }
 
 async function checkCorrectAnswer() {
+
+    blockClickAnwsersButtons(true);
     await checkAnswer();
     await clearAddedClassNames().then(() => getQuestion());
+
 }
 
 selectors.startButtonSelector.addEventListener('click', (e) => {

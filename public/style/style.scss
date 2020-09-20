@@ -5,8 +5,8 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
-  font-size: 62.5%;
   letter-spacing: .2rem;
+  font-size: 62.5%;
 }
 
 $color-bgc: #3582F0;
@@ -17,6 +17,7 @@ $default-font-size: 1.6rem;
 
 
 body {
+    
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -128,30 +129,29 @@ body {
 }
 
 .score {
-position: absolute;
-right: 0;
-bottom: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 
 
-    &__text {
-        margin-right: 2rem;
-        font-size: 3rem;
-    }
+        &__text {
+            margin-right: 2rem;
+            font-size: 3rem;
+        }
 
-    &__value {
-        position: relative;
-        margin: 0 1rem 0 2rem;
-        font-size: 3rem;
-    }
+        &__value {
+            position: relative;
+            margin: 0 1rem 0 2rem;
+            font-size: 3rem;
+        }
 
-    &__update {
-        opacity: 0;
-        font-size: 3rem;
-        position: absolute;
-        top: -4rem;
-        left: -2rem;
-        
-    }
+        &__update {
+            opacity: 0;
+            font-size: 3rem;
+            position: absolute;
+            top: -4rem;
+            left: -2rem;    
+        }
 }
 
 .checked {
@@ -177,9 +177,7 @@ bottom: 0;
     }
     
     50% {
-        transform: scale(1.02);
         background-color: gray;
-        // border: .2rem solid gray;
         color: white;
     }
     100% {
@@ -200,4 +198,29 @@ bottom: 0;
           outline: none;
         }
       
+  }
+
+  @media only screen and (max-width: 700px ) {
+
+    .btn-grid {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+  }
+
+ 
+  @media only screen and (max-width: 450px ) {
+
+.container {
+    padding: 2rem 0;
+}
+
+
+.controls__start-button {
+    margin: 1.5rem 5rem;
+     padding: 1rem 5rem; 
+}
+
   }
