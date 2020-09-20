@@ -7,7 +7,8 @@ const selectors = {
     answerButtons: document.querySelectorAll('.answer-buttons .btn'),
     startButtonSelector: document.querySelector('.controls__start-button'),
     scoreContainerSelector: document.querySelector('.score'),
-    scoreValueSelector: document.querySelector('.score__value')
+    scoreValueSelector: document.querySelector('.score__value'),
+    scoreUpdateSelector: document.querySelector('.score__update')
 };
 
 let totalScore = 0;
@@ -54,6 +55,7 @@ function checkAnswer() {
         setTimeout(() => {
             answerSelector.forEach(sel => {
                 sel.textContent == correctAswerFromDb ? sel.classList.add('correct') : sel.classList.add('wrong');
+                console.log("tap");
 
                 sel.classList.remove('checked');
             });
@@ -75,9 +77,9 @@ function clearAddedClassNames() {
                 sel.classList.remove('wrong');
                 scoreUpdateSelector.classList.remove('updatePlus');
                 scoreUpdateSelector.classList.remove('updateMinus');
+                sel.disabled = false;
             })
             scoreUpdateSelector.classList.remove('update');
-
             resolve();
         }, 3000);
     })
@@ -106,6 +108,25 @@ function updateScoreNumber(score) {
 
 
 
+//TODO: naprawić klikanie na element jeżeli, zostanie wciśniety to nie mozna drugi raz
+function blockClickAnwsers(state) {
+
+    const { answerSelector } = selectors;
+
+
+    answerSelector.forEach(sel => {
+        if (state) {
+            sel.disabled = true;
+            console.log('zablokowano');
+        } else {
+            sel.disable = false;
+            console.log('odblokowano');
+        }
+    });
+}
+
+
+
 function updateScore() {
 
     let plusScore = 10;
@@ -130,7 +151,6 @@ async function getQuestion() {
 async function checkCorrectAnswer() {
     await checkAnswer();
     await clearAddedClassNames().then(() => getQuestion());
-
 }
 
 selectors.startButtonSelector.addEventListener('click', (e) => {
@@ -148,6 +168,7 @@ selectors.startButtonSelector.addEventListener('click', (e) => {
 });
 
 selectors.answerButtons.forEach(selector => {
+
     selector.addEventListener('click', checkCorrectAnswer)
 });
 
