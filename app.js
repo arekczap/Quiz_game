@@ -7,11 +7,10 @@ const selectors = {
     answerButtons: document.querySelectorAll('.answer-buttons .btn'),
     startButtonSelector: document.querySelector('.controls__start-button'),
     scoreContainerSelector: document.querySelector('.score'),
-    scoreValueSelector: document.querySelector('.score__value'),
-    scoreUpdateSelector: document.querySelector('.score__update')
+    scoreValueSelector: document.querySelector('.score__value')
 };
 
-let totalScore;
+let totalScore = 0;
 let questionFromDb;
 let correctAswerFromDb = '';
 let checkedAnswer = '';
@@ -47,7 +46,7 @@ function attachQuestionToSelectors() {
 function checkAnswer() {
 
     event.toElement.classList.add('checked');
-     checkedAnswer = event.toElement.textContent;
+    checkedAnswer = event.toElement.textContent;
 
     return new Promise((resolve) => {
         const { answerSelector } = selectors;
@@ -58,7 +57,7 @@ function checkAnswer() {
 
                 sel.classList.remove('checked');
             });
-            updateScoreNumber();
+            updateScore();
             resolve()
         }, 3000);
     })
@@ -74,6 +73,8 @@ function clearAddedClassNames() {
             answerSelector.forEach(sel => {
                 sel.classList.remove('correct');
                 sel.classList.remove('wrong');
+                scoreUpdateSelector.classList.remove('updatePlus');
+                scoreUpdateSelector.classList.remove('updateMinus');
             })
             scoreUpdateSelector.classList.remove('update');
 
@@ -90,45 +91,35 @@ function initialFunction() {
             answer.innerText = '';
         }));
         scoreUpdateSelector.textContent = '0';
-        totalScore = 0;
+
         resolve();
     })
 
 };
 
 
-
-function updateScoreNumber() {
-    const { scoreUpdateSelector } = selectors;
-
-if (checkedAnswer == correctAswerFromDb) {
-    
-    // TODO: zrobic logikę dodawania i odejmowania punktow do score, potem zablokować możliwość naciśnięcia odpowiedzi drugi raz podczas sprawdzania czy zaznaczona została dobra odpowiedz
-console.log("poprawne");
-} else {
-    console.log("niepoprawne");
-}
-    
-
-    // scoreUpdateSelector.classList.add('updatePlus');
-    // scoreUpdateSelector.textContent = '-7';
-
-
-
-    // totalScore += numberToChangeScore;
-    // scoreValueSelector.textContent = totalScore;
+function updateScoreNumber(score) {
+    const { scoreValueSelector } = selectors;
+    totalScore += score;
+    scoreValueSelector.textContent = totalScore;
 }
 
 
 
+function updateScore() {
+
+    let plusScore = 10;
+    let minusScore = -7;
+
+    if (checkedAnswer == correctAswerFromDb) {
+        updateScoreNumber(plusScore);
+    } else {
+        updateScoreNumber(minusScore);
+    }
+}
 
 
-// function nextQuestion() {
-//     return new Promise((resolve) => {
-//         getQuestionFromDB();
-//         resolve();
-//     })
-// }
+
 
 async function getQuestion() {
     await getQuestionFromDB();
@@ -142,27 +133,6 @@ async function checkCorrectAnswer() {
 
 }
 
-
-
-
-
-//sprawdzenie poprawnej odpowiedzi
-selectors.answerButtons.forEach(selector => {
-    selector.addEventListener('click', checkCorrectAnswer)
-});
-
-
-
-// setTimeout(() => {
-//     e.toElement.textContent == correctAnswerFromDB ? updateScoreNumber(10) : updateScoreNumber(-7);
-//     scoreUpdateSelector.classList.remove('update');
-
-// }, 4000);
-
-
-
-
-
 selectors.startButtonSelector.addEventListener('click', (e) => {
 
     e.toElement.disabled = true;
@@ -174,8 +144,13 @@ selectors.startButtonSelector.addEventListener('click', (e) => {
         e.toElement.classList.toggle('hide');
         questionContainerSelector.classList.toggle('hide');
         scoreContainerSelector.classList.toggle('hide');
-
     }, 500);
 });
+
+selectors.answerButtons.forEach(selector => {
+    selector.addEventListener('click', checkCorrectAnswer)
+});
+
+
 
 

@@ -160,10 +160,12 @@ bottom: 0;
 
 .updatePlus {
     animation: updatePoints 1s normal;
+
 }
 
 .updateMinus {
     animation: updatePoints 1s normal;
+    left: -1rem;
 }
 
 
